@@ -1,9 +1,43 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Zork
 {
     class Program
     {
+        private static bool Move(Commands command)
+        {
+            bool didMove = false;
+
+            switch(command)
+            {
+                case Commands.NORTH:
+                case Commands.SOUTH:
+                    break;
+
+                case Commands.EAST when currentRoom < rooms.Length - 1:
+
+                        currentRoom++;
+                        didMove = true;
+                        break;
+
+                case Commands.WEST when currentRoom > 0:
+                  
+                        currentRoom--;
+                        didMove = true;
+                        break;
+            }
+
+
+
+
+            return didMove;
+        }
+
+        private static readonly string[] rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
+
+        private static int currentRoom = 1;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Zork!");
@@ -12,7 +46,7 @@ namespace Zork
 
             while (isRunning)
             {
-                Console.Write("> ");
+                Console.Write($"{rooms[currentRoom]}\n> ");
                 string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
 
@@ -24,7 +58,15 @@ namespace Zork
                     case Commands.EAST:
                     case Commands.WEST:
                     case Commands.NORTH:
-                        outputString = $"You moved {command}.";
+                        if(Move(command))
+                        {
+                            outputString = $"You moved {command}.";
+                        }
+                        else
+                        {
+                            outputString = "The way is shut!";
+                        }
+
                         break;
 
                     case Commands.LOOK:
