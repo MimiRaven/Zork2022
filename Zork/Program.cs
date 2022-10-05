@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Zork
 {
@@ -44,18 +45,13 @@ namespace Zork
             return didMove;
         }
 
-        private static readonly Room[,] rooms =
-        {
-            { new Room("Rocky Trail"), new Room("South of House"), new Room("Canyon View") },
-            { new Room("Forest"), new Room("West of House"), new Room("Behind House") },
-            { new Room("Dense Woods"), new Room("North of House"), new Room("Clearing") }
-        };
+        private static Room[,] rooms;
 
         static void Main(string[] args)
         {
-            const string defaultRoomsFilename = "Rooms.txt";
-            string roomsfilename = (args.Length > 0 ? args[(int)CommandLineArguments.RoomsFilename] : defaultRoomsFilename);
-            InitializeRoomDescription(@"Content\Rooms.txt");
+            const string defaultRoomsFilename = "Rooms.json";
+            string roomsFilename = (args.Length > 0 ? args[(int)CommandLineArguments.RoomsFilename] : defaultRoomsFilename);
+            InitializeRooms(roomsFilename);
             Console.WriteLine("Welcome to Zork!");
 
             Room previousRoom = null;
@@ -126,42 +122,14 @@ namespace Zork
 
         private static readonly Dictionary<string, Room> RoomMap;
 
-        static Program()
-        {
-            RoomMap = new Dictionary<string, Room>();
-            foreach (Room room in rooms)
-            {
-                RoomMap.Add(room.Name, room);
-            }
-        }
-
         private enum CommandLineArguments
         {
             RoomsFilename = 0
         }
 
-        private enum Fields
-        {
-            Name = 0,
-            Description
-        }
 
-        private static void InitializeRoomDescription(string roomsFilename)
-        {
-            const string fieldDelimiter = "##";
-            const int expectedFieldCount = 2;
-
-            var roomQuery = from line in File.ReadLines(roomsFilename)
-                            let fields = line.Split(fieldDelimiter)
-                            where fields.Length == expectedFieldCount
-                            select (Name: fields[(int)Fields.Name],
-                                    Description: fields[(int)Fields.Description]);
-
-            foreach (var (Name, Description) in roomQuery)
-            {
-                RoomMap[Name].Description = Description;
-            }
-        }
+        private static void InitializeRooms(string roomsFilename) =>
+            rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFilename));
 
         private static int currentRow = 1;
         private static int currentColumn = 1;
