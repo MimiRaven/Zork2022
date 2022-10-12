@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <None Update="Content\Rooms.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Content\Rooms.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
