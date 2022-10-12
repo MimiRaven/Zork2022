@@ -103,7 +103,6 @@ namespace Zork
                         outputString = $"Unknown command: {inputString}";
                         break;
                 }
-
                 Console.WriteLine(outputString);
             }
         }
@@ -126,7 +125,6 @@ namespace Zork
         {
             RoomsFilename = 0
         }
-
 
         private static void InitializeRooms(string roomsFilename) =>
             rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFilename));
