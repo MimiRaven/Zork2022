@@ -11,8 +11,7 @@ namespace Zork.Common
             set => _currentRoom = value;
         }
 
-        public List<Item> Inventory { get; }
-
+        public IEnumerable<Item> Inventory => _inventory;
 
         public Player(World world, string startingLocation)
         {
@@ -23,7 +22,7 @@ namespace Zork.Common
                 throw new Exception($"Invalid starting location: {startingLocation}");
             }
 
-            Inventory = new List<Item>();
+            _inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)
@@ -37,39 +36,26 @@ namespace Zork.Common
             return didMove;
         }
 
-        public bool Take(string itemName)
+        public void AddItemToInventory(Item itemToAdd)
         {
-            Item itemToTake = _world.ItemsByName.GetValueOrDefault(itemName);
-
-            if(CurrentRoom.Inventory.Contains(itemToTake))
+            if (_inventory.Contains(itemToAdd))
             {
-                Inventory.Add(itemToTake);
-                CurrentRoom.Inventory.Remove(itemToTake);
-                return true;
+                throw new Exception($"Item {itemToAdd} already exists in inventory.");
             }
-            else
+
+            _inventory.Add(itemToAdd);
+        }
+
+        public void RemoveItemFromInventory(Item itemToRemove)
+        {
+            if (_inventory.Remove(itemToRemove) == false)
             {
-                return false;
+                throw new Exception("Could not remove item from inventory.");
             }
         }
 
-        public bool Drop(string itemName)
-        {
-            Item itemToTake = _world.ItemsByName.GetValueOrDefault(itemName);
-
-                if (Inventory.Contains(itemToTake))
-            {
-                Inventory.Remove(itemToTake);
-                CurrentRoom.Inventory.Add(itemToTake);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private World _world;
+        private readonly World _world;
         private Room _currentRoom;
+        private readonly List<Item> _inventory;
     }
 }
