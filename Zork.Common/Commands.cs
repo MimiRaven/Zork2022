@@ -18,6 +18,8 @@
         W = West,
         Take,
         Drop,
+        Score,
+        Reward,
         Inventory,
         I = Inventory,
         Unknown

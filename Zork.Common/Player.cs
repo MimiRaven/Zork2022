@@ -5,10 +5,50 @@ namespace Zork.Common
 {
     public class Player
     {
+        public event EventHandler<Room> LocationChanged;
+        public event EventHandler<int> MovesChanged;
+        public event EventHandler<int> ScoreChanged;
+
+        private int _movesNumber;
+
+        private int _scoreNumber;
         public Room CurrentRoom
         {
             get => _currentRoom;
-            set => _currentRoom = value;
+            set
+            {
+                if(_currentRoom != value)
+                {
+                    _currentRoom = value;
+                    LocationChanged?.Invoke(this, _currentRoom);
+                }
+            }
+        }
+
+        public int _Moves
+        {
+            get => _movesNumber;
+            set
+            {
+                if(_movesNumber != value)
+                {
+                    _movesNumber = value;
+                    MovesChanged?.Invoke(this, _movesNumber);
+                }
+            }
+        }
+
+        public int _Score
+        {
+            get => _scoreNumber;
+            set
+            {
+                if (_scoreNumber != value)
+                {
+                    _scoreNumber = value;
+                    ScoreChanged?.Invoke(this, _scoreNumber);
+                }
+            }
         }
 
         public IEnumerable<Item> Inventory => _inventory;
