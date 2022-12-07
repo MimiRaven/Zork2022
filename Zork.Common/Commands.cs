@@ -20,6 +20,10 @@
         Drop,
         Score,
         Reward,
+        Open,
+        Close,
+        Activate,
+        Deactivate,
         Inventory,
         I = Inventory,
         Unknown
