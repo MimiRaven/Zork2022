@@ -5,17 +5,30 @@
       {
         "Name": "Mat",
         "LookDescription": "A rubber mat saying 'Welcome to Zork!' lies here.",
-        "InventoryDescription": "A welcome mat."
+        "InventoryDescription": "A welcome mat.",
+        "CanOpen": false,
+        "CanClose": false
       },
       {
         "Name": "Mailbox",
         "LookDescription": "There is a small mailbox here.",
-        "InventoryDescription": "A small mailbox."
+        "InventoryDescription": "A small mailbox.",
+        "CanOpen": true,
+        "CanClose": true
       },
       {
         "Name": "Leaves",
         "LookDescription": "There is a pile of leaves here.",
-        "InventoryDescription": "A pile of leaves."
+        "InventoryDescription": "A pile of leaves.",
+        "CanOpen": false,
+        "CanClose": false
+      },
+      {
+        "Name": "Lantern",
+        "LookDescription": "There is an old lantern.",
+        "InventoryDescription": "A old lantern.",
+        "CanOpen": false,
+        "CanClose": false
       }
     ],
     "Rooms": [
@@ -90,7 +103,7 @@
           "West": "Forest 2",
           "South": "Forest 3"
         },
-        "IventoryNames": [
+        "InventoryNames": [
           "Leaves"
         ]
       }

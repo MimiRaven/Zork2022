@@ -24,6 +24,7 @@
         Close,
         Activate,
         Deactivate,
+        Shout,
         Inventory,
         I = Inventory,
         Unknown

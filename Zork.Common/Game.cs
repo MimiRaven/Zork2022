@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace Zork.Common
@@ -102,6 +103,28 @@ namespace Zork.Common
                     }
                     break;
 
+                case Commands.Open:
+                    if (string.IsNullOrEmpty(subject))
+                    {
+                        Output.WriteLine("This command requires a subject.");
+                    }
+                    else
+                    {
+                        Open(subject);
+                    }
+                    break;
+
+                case Commands.Close:
+                    if (string.IsNullOrEmpty(subject))
+                    {
+                        Output.WriteLine("This command requires a subject.");
+                    }
+                    else
+                    {
+                        Close(subject);
+                    }
+                    break;
+
                 case Commands.Inventory:
                     if (Player.Inventory.Count() == 0)
                     {
@@ -125,6 +148,10 @@ namespace Zork.Common
                     Player._Score++;
                     break;
 
+                case Commands.Shout:
+                    Output.WriteLine("AAARGHGHH");
+                    break;
+
                 default:
                     Output.WriteLine("Unknown command.");
                     break;
@@ -141,7 +168,7 @@ namespace Zork.Common
             }
 
         }
-        
+
         private void Look()
         {
             Output.WriteLine(Player.CurrentRoom.Description);
@@ -178,6 +205,36 @@ namespace Zork.Common
                 Player.CurrentRoom.AddItemToInventory(itemToDrop);
                 Player.RemoveItemFromInventory(itemToDrop);
                 Output.WriteLine("Dropped.");
+            }
+        }
+
+        public void Open(string itemName)
+        {
+            Item itemToOpen = Player.CurrentRoom.Inventory.FirstOrDefault(item => string.Compare(item.Name, itemName, ignoreCase: true) == 0);
+            
+            if (itemToOpen.CanOpen == true)
+            {
+                Output.WriteLine("Opened.");
+            }
+        
+            if (itemToOpen.CanOpen == false)
+            {
+                Output.WriteLine("You can't open such thing.");
+            }
+        }
+
+        public void Close(string itemName)
+        {
+            Item itemToClose = Player.CurrentRoom.Inventory.FirstOrDefault(item => string.Compare(item.Name, itemName, ignoreCase: true) == 0);
+
+            if (itemToClose.CanClose == true)
+            {
+                Output.WriteLine("Closed.");
+            }
+
+            if (itemToClose.CanClose == false)
+            {
+                Output.WriteLine("You can't close such thing.");
             }
         }
 
